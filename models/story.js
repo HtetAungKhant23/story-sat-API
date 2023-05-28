@@ -2,13 +2,27 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const storySchema = new Schema({
-    creator:{
-        type: Object
-    },
-    story: {
+    story_title: {
         type: String,
         required: true
-    }
+    },
+    content: {
+        type: String,
+        required: true
+    },
+    creator:{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    win_episode: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Episode'
+    }],
+    episode: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Episode'
+    }]
+
 }, {timestamps: true});
 
 module.exports = mongoose.model('Story', storySchema);

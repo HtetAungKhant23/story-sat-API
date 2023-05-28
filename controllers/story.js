@@ -77,3 +77,22 @@ exports.createStory = async (req, res, next) => {
 //             next(err);
 //         })
 // }
+
+exports.getStoryById = async (req, res, next) => {
+    try{
+        const storyId = req.params.storyId;
+        console.log(storyId);
+        const story = await Story.findById(storyId);
+        console.log(story);
+        if(!story){
+            const error = new Error('story not found!');
+            error.statusCode = 404;
+            console.log(error);
+            throw error;
+        }
+        res.status(200).json(story);
+    }catch(err){
+        console.log('here is error!');
+        throw err;
+    }
+}
