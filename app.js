@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/users');
 const storyRoutes = require('./routes/story');
+const episodeRoutes = require('./routes/episode');
 const dbConnect = require('./configs/dbConnect');
 
 const app = express();
@@ -16,6 +17,7 @@ app.use((req, res, next) => {
 
 app.use('/user', userRoutes);
 app.use('/story', storyRoutes);
+app.use('/episode', episodeRoutes);
 
 app.use((error, req, res, next) => {
     const message = error.message;
