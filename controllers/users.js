@@ -1,6 +1,6 @@
 const User = require('../models/users');
 
-exports.create_account = async (req, res, next) => {
+exports.signup_account = async (req, res, next) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
@@ -44,8 +44,12 @@ exports.get_Account_By_Id = async (req, res, next) => {
 
 exports.get_All_User_Account = async (req, res, next) => {
     try {
-
-
+        const users = await User.find();
+        if(!users){
+            const err = new Error('Users not found!');
+            throw err;
+        }
+        res.status(200).json(users);
 
     } catch(err) {
         console.log(err.message);
