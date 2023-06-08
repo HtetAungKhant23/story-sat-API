@@ -1,4 +1,5 @@
 const User = require('../models/users');
+const Episode = require('../models/episode');
 
 exports.signup_account = async (req, res, next) => {
     try {
@@ -24,6 +25,27 @@ exports.signup_account = async (req, res, next) => {
         res.status(201).json(account);
 
     } catch(err) {
+        console.log(err.message);
+        res.status(500).json(err.message);
+    }
+}
+
+exports.vote_episode = async (req, res, next) => {
+    try{
+        const episodeId = req.params.episodeId;
+        const episode = await Episode.findById(episodeId);
+        const userId = "6481dd1210d5bc318de93c0c";
+
+        episode.vote += 1;
+        episode.voter.push(userId);
+        await episode.save();
+
+        res.status(200).json({
+            message: 'voting process success!',
+            episode: episode
+        });
+
+    }catch(err){
         console.log(err.message);
         res.status(500).json(err.message);
     }

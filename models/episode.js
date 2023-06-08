@@ -26,7 +26,10 @@ const episodeSchema = new Schema({
     vote: {
         type: Number,
         default: 0
-    }
+    },
+    voter: [{
+        type: String
+    }]
 
 }, { timestamps: true });
 

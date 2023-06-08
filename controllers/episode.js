@@ -37,5 +37,4 @@ exports.create_episode = async (req, res, next) => {
         err.statusCode = 500;
         throw err;
     }
-    
 }
