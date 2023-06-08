@@ -19,8 +19,9 @@ const episodeSchema = new Schema({
         ref: 'Story'
     },
     creator: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+        type: String
+        // type: Schema.Types.ObjectId,
+        // ref: 'User'
     },
     vote: {
         type: Number,
