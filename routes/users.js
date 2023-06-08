@@ -4,24 +4,7 @@ const User = require('../models/users');
 const controllers = require('../controllers/users');
 const router = express.Router();
 
-router.post('/signup',
-[
-    body('email')
-        .trim()
-        .isEmail()
-        .withMessage('email format is not correct!')
-        .custom((value, {req}) => {
-            return User.findOne({email: value})
-                .then(user => {
-                    if(user){
-                        return Promise.reject('email already exist!');
-                    }
-                })
-        })
-        .normalizeEmail()
-]
-, controllers.signup_account);
-
-router.get('/:id', controllers.get_Account_By_Id);
+// signup => localhost:5000/user/signup
+router.post('/signup', controllers.signup_account);
 
 module.exports = router;

@@ -2,13 +2,17 @@ const express = require('express');
 const controllers = require('../controllers/story');
 const router = express.Router();
 
-// get story => localhost:3000/story
-router.get('/', controllers.getStory);
+// create story => localhost:5000/story/create/12345
+router.post('/create/:creatorId', controllers.createStory);
+
+
+
+// get story => localhost:5000/story
+// router.get('/', controllers.getStory);
 
 // 
-router.get('/:storyId', controllers.getStoryById);
+// router.get('/:storyId', controllers.getStoryById);
 
-// create story => localhost:3000/story
-router.post('/', controllers.createStory);
+
 
 module.exports = router;

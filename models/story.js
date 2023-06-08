@@ -6,10 +6,6 @@ const storySchema = new Schema({
         type: String,
         required: true
     },
-    content: {
-        type: String,
-        required: true
-    },
     creator:{
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -18,7 +14,7 @@ const storySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Episode'
     }],
-    episode: [{
+    episodes: [{
         type: Schema.Types.ObjectId,
         ref: 'Episode'
     }]

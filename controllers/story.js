@@ -1,4 +1,51 @@
 const Story = require('../models/story');
+const Episode = require('../models/episode');
+// const User = require('../models/users');
+
+exports.createStory = async (req, res, next) => {
+    try {
+        const {
+            storyTitle,
+            episodeTitle,
+            episodeContent
+        } = req.body;
+
+        const creatorId = req.params.creatorId;
+
+        // const creator = await User.findById(creatorId);
+
+        const createEpisode = new Episode({
+            episode_title: episodeTitle,
+            content: episodeContent,
+            creator: creatorId
+        });
+
+        const createStory = new Story({
+            story_title: storyTitle,
+            creator: creatorId
+        });
+
+        const episode = await createEpisode.save();
+        const story = await createStory.save();
+        episode.main_story = story._id;
+        story.episodes.push(episode._id);
+        story.win_episode.push(episode._id);
+        await story.save();
+        await episode.save();
+
+        res.status(201).json({
+            message: "story is successfully created!",
+            story: story,
+            episode: episode
+        })
+
+    } catch (err) {
+        err.statusCode = 500;
+        throw err;
+    }
+}
+
+
 
 // exports.getStory = (req, res, next) => {
 
@@ -22,34 +69,17 @@ const Story = require('../models/story');
 
 // }
 
-exports.getStory = async (req, res, next) => {
-    try{
-        const story = await Story.find();
-        res.status(200).json(story);
-    }catch(err){
-        err.statusCode = 500;
-        throw err;
-    }
-}
+// exports.getStory = async (req, res, next) => {
+//     try{
+//         const story = await Story.find();
+//         res.status(200).json(story);
+//     }catch(err){
+//         err.statusCode = 500;
+//         throw err;
+//     }
+// }
 
-exports.createStory = async (req, res, next) => {
-    try{
-        const storyContent = req.body.story;
-        const creator = req.body.creator;
 
-        const story = new Story({
-            creator: creator,
-            story: storyContent      
-        });
-        
-        const storyResult = await story.save();
-        res.status(201).json(storyResult);
-        
-    }catch(err){
-        err.statusCode = 500;
-        throw err;
-    }
-}
 
 // exports.createStory = (req, res, next) => {
 //     const storyContent = req.body.story;
@@ -78,21 +108,21 @@ exports.createStory = async (req, res, next) => {
 //         })
 // }
 
-exports.getStoryById = async (req, res, next) => {
-    try{
-        const storyId = req.params.storyId;
-        console.log(storyId);
-        const story = await Story.findById(storyId);
-        console.log(story);
-        if(!story){
-            const error = new Error('story not found!');
-            error.statusCode = 404;
-            console.log(error);
-            throw error;
-        }
-        res.status(200).json(story);
-    }catch(err){
-        console.log('here is error!');
-        throw err;
-    }
-}
+// exports.getStoryById = async (req, res, next) => {
+//     try{
+//         const storyId = req.params.storyId;
+//         console.log(storyId);
+//         const story = await Story.findById(storyId);
+//         console.log(story);
+//         if(!story){
+//             const error = new Error('story not found!');
+//             error.statusCode = 404;
+//             console.log(error);
+//             throw error;
+//         }
+//         res.status(200).json(story);
+//     }catch(err){
+//         console.log('here is error!');
+//         throw err;
+//     }
+// }

@@ -14,9 +14,9 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    admin_roll: {
-        type: Number,
-        default: 0
+    isAdmin: {
+        type: Boolean,
+        default: false
     },
     story: [{
         type: Schema.Types.ObjectId,

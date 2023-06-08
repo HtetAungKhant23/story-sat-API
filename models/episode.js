@@ -12,7 +12,7 @@ const episodeSchema = new Schema({
     },
     episode_number: {
         type: Number,
-        default: 0
+        default: 1
     },
     main_story: {
         type: Schema.Types.ObjectId,
