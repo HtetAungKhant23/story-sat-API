@@ -19,18 +19,16 @@ const episodeSchema = new Schema({
         ref: 'Story'
     },
     creator: {
-        type: String
-        // type: Schema.Types.ObjectId,
-        // ref: 'User'
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     vote: {
         type: Number,
         default: 0
     },
     voter: [{
-        type: String
-        // type: Schema.Types.ObjectId,
-        // ref: 'User'
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }]
 
 }, { timestamps: true });

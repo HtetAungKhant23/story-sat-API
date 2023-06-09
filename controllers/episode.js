@@ -8,7 +8,7 @@ exports.create_episode = async (req, res, next) => {
             content
         } = req.body;
 
-        const creatorId = "6481d89549aecaa87666328a";
+        const creatorId = req.userAuth;
 
         const main_story = req.params.main_story;
         

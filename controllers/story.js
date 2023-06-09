@@ -10,7 +10,7 @@ exports.createStory = async (req, res, next) => {
             episodeContent
         } = req.body;
 
-        const creatorId = req.params.creatorId;
+        const creatorId = req.userAuth;
 
         // const creator = await User.findById(creatorId);
 

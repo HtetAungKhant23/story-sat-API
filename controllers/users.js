@@ -17,49 +17,57 @@ exports.signup = async (req, res, next) => {
         });
 
         const account = await user.save();
-        
-        if(!account){
+
+        if (!account) {
             const err = new Error('account cannot create!');
             throw err;
         }
 
         res.status(201).json(account);
 
-    } catch(err) {
+    } catch (err) {
         console.log(err.message);
         next(err);
     }
 }
 
 exports.signin = async (req, res, next) => {
-    try{
+    try {
         const {
             email,
             password
         } = req.body;
 
-        const user = new User({
-            email,
-            password
-        });
-        await user.save();
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            const err = new Error('user not found');
+            err.statusCode = 422;
+            throw err;
+        }
+
+        if (user.password !== password) {
+            const err = new Error('password is not match!');
+            err.statusCode = 422;
+            throw err;
+        }
+
         res.status(200).json({
             message: 'login success!',
             user: user,
             token: generateToken(user._id)
         });
 
-    }catch(err){
+    } catch (err) {
         console.log(err.message);
         next(err);
     }
 }
 
 exports.vote_episode = async (req, res, next) => {
-    try{
+    try {
         const episodeId = req.params.episodeId;
         const episode = await Episode.findById(episodeId);
-        const userId = "6481dd1210d5bc318de93c0c";
+        const userId = req.userAuth;
 
         /* 
 
@@ -68,7 +76,6 @@ exports.vote_episode = async (req, res, next) => {
         တခုတွေ့တာနဲ့ validation failed ဖြစ်သွားမယ်   
         
         */
-        
 
         episode.vote += 1;
         episode.voter.push(userId);
@@ -79,7 +86,7 @@ exports.vote_episode = async (req, res, next) => {
             episode: episode
         });
 
-    }catch(err){
+    } catch (err) {
         console.log(err.message);
         res.status(500).json(err.message);
     }
