@@ -1,7 +1,8 @@
 const User = require('../models/users');
 const Episode = require('../models/episode');
+const generateToken = require('../utils/generateToken');
 
-exports.signup_account = async (req, res, next) => {
+exports.signup = async (req, res, next) => {
     try {
         const {
             email,
@@ -26,7 +27,31 @@ exports.signup_account = async (req, res, next) => {
 
     } catch(err) {
         console.log(err.message);
-        res.status(500).json(err.message);
+        next(err);
+    }
+}
+
+exports.signin = async (req, res, next) => {
+    try{
+        const {
+            email,
+            password
+        } = req.body;
+
+        const user = new User({
+            email,
+            password
+        });
+        await user.save();
+        res.status(200).json({
+            message: 'login success!',
+            user: user,
+            token: generateToken(user._id)
+        });
+
+    }catch(err){
+        console.log(err.message);
+        next(err);
     }
 }
 

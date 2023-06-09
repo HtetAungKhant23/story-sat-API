@@ -21,11 +21,11 @@ app.use('/episode', episodeRoutes);
 
 app.use((error, req, res, next) => {
     const message = error.message;
-    const status = error.statusCode;
+    const status = error.statusCode || 500;
     res.status(status).json({
         message: message
     });
-})
+});
 
 const PORT = process.env.PORT || 6000;
 dbConnect();
