@@ -36,6 +36,15 @@ exports.vote_episode = async (req, res, next) => {
         const episode = await Episode.findById(episodeId);
         const userId = "6481dd1210d5bc318de93c0c";
 
+        /* 
+
+        validation မှာ episode အားလုံးကို find နဲ့ ခေါ်ထုတ်ထားမယ်
+        ပီးရင် ဝင်လာတဲ့ userId နဲ့ episode တွေထဲက voter တွေနဲ့ id ချင်းတိုက်စစ်မယ်
+        တခုတွေ့တာနဲ့ validation failed ဖြစ်သွားမယ်   
+        
+        */
+        
+
         episode.vote += 1;
         episode.voter.push(userId);
         await episode.save();

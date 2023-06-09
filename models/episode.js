@@ -29,6 +29,8 @@ const episodeSchema = new Schema({
     },
     voter: [{
         type: String
+        // type: Schema.Types.ObjectId,
+        // ref: 'User'
     }]
 
 }, { timestamps: true });

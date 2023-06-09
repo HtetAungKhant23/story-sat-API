@@ -11,7 +11,7 @@ exports.create_episode = async (req, res, next) => {
         const creatorId = "6481d89549aecaa87666328a";
 
         const main_story = req.params.main_story;
-        console.log(req.query.episodeNumber);
+        
         const episodeNumber = Number(req.query.episodeNumber) + 1;
 
         const episode = new Episdoe({
