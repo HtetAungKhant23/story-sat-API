@@ -1,5 +1,6 @@
 const User = require('../models/users');
 const Episode = require('../models/episode');
+const Story = require('../models/story');
 const generateToken = require('../utils/generateToken');
 
 exports.signup = async (req, res, next) => {
@@ -26,7 +27,6 @@ exports.signup = async (req, res, next) => {
         res.status(201).json(account);
 
     } catch (err) {
-        console.log(err.message);
         next(err);
     }
 }
@@ -58,7 +58,6 @@ exports.signin = async (req, res, next) => {
         });
 
     } catch (err) {
-        console.log(err.message);
         next(err);
     }
 }
@@ -68,14 +67,6 @@ exports.vote_episode = async (req, res, next) => {
         const episodeId = req.params.episodeId;
         const episode = await Episode.findById(episodeId);
         const userId = req.userAuth;
-
-        /* 
-
-        validation မှာ episode အားလုံးကို find နဲ့ ခေါ်ထုတ်ထားမယ်
-        ပီးရင် ဝင်လာတဲ့ userId နဲ့ episode တွေထဲက voter တွေနဲ့ id ချင်းတိုက်စစ်မယ်
-        တခုတွေ့တာနဲ့ validation failed ဖြစ်သွားမယ်   
-        
-        */
 
         episode.vote += 1;
         episode.voter.push(userId);
@@ -87,37 +78,54 @@ exports.vote_episode = async (req, res, next) => {
         });
 
     } catch (err) {
-        console.log(err.message);
-        res.status(500).json(err.message);
+        next(err);
     }
 }
 
-// exports.get_Account_By_Id = async (req, res, next) => {
-//     try {
-//         const user_Id = req.params.id;
-//         const user = await User.findById(user_Id);
-//         if(!user){
-//             const err = new Error('user not found!');
-//             throw err;
-//         }
-//         res.status(200).json(user);
-//     } catch(err) {
-//         console.log(err.message);
-//         res.status(500).json(err.message);
-//     }
-// }
+exports.updateEpisode = async (req, res, next) => {
+    try{
+        const user = await User.findById(req.userAuth);
+        const episode = await Episode.findById(req.params.episodeId);
+        if(!episode){
+            const err = new Error('episode not found!');
+            throw err;
+        }
 
-// exports.get_All_User_Account = async (req, res, next) => {
-//     try {
-//         const users = await User.find();
-//         if(!users){
-//             const err = new Error('Users not found!');
-//             throw err;
-//         }
-//         res.status(200).json(users);
+        const {
+            content
+        } = req.body;
 
-//     } catch(err) {
-//         console.log(err.message);
-//         res.status(500).json(err.message);
-//     }
-// }
+        episode.content = content;
+        await episode.save();   
+        res.status(200).json({
+            message: 'updating success!',
+            user: user
+        });
+
+    }catch(err){
+        next(err);
+    }
+}
+
+exports.deleteEpisode = async (req, res, next) => {
+    try{
+        const user = await User.findById(req.userAuth);
+        const episodes = await Episode.find();
+        const episode = await Episode.findById(req.params.episodeId);
+        const mainStory = await Story.findById(episode.main_story);
+        user.episode = user.episode.filter(episode => episode._id.toString() !== episode._id.toString());       
+        episodes = episodes.filter(episode => episode._id.toString() !== episode._id.toString());
+        mainStory.episodes = mainStory.episodes.filter(episode => episode._id.toString() !== episode._id.toString());
+        await user.save();
+        await episodes.save();
+        await mainStory.save();
+        
+        res.status(200).json({
+            message: 'deleted episode!',
+            user: user
+        })
+
+    }catch(err){
+        next(err);
+    }
+}

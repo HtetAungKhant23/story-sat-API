@@ -1,6 +1,5 @@
 const Story = require('../models/story');
 const Episode = require('../models/episode');
-// const User = require('../models/users');
 
 exports.createStory = async (req, res, next) => {
     try {
@@ -11,8 +10,6 @@ exports.createStory = async (req, res, next) => {
         } = req.body;
 
         const creatorId = req.userAuth;
-
-        // const creator = await User.findById(creatorId);
 
         const createEpisode = new Episode({
             episode_title: episodeTitle,
@@ -44,85 +41,3 @@ exports.createStory = async (req, res, next) => {
         throw err;
     }
 }
-
-
-
-// exports.getStory = (req, res, next) => {
-
-//     Story.find()
-//         .then(story => {
-//             if(!story){
-//                 const error = new Error('story not found!');
-//                 throw error;
-//             }
-//             console.log(story);
-//             res.status(200).json({
-//                 storyDetail: story
-//             })
-//         })
-//         .catch(err => {
-//             if(!err.statusCode){
-//                 err.statusCode = 500;
-//             }
-//             next(err);
-//         })
-
-// }
-
-// exports.getStory = async (req, res, next) => {
-//     try{
-//         const story = await Story.find();
-//         res.status(200).json(story);
-//     }catch(err){
-//         err.statusCode = 500;
-//         throw err;
-//     }
-// }
-
-
-
-// exports.createStory = (req, res, next) => {
-//     const storyContent = req.body.story;
-//     const creator = req.body.creator;
-
-//     console.log(storyContent);
-
-//     const story = new Story({
-//         creator: creator,
-//         story: storyContent      
-//     });
-
-//     story.save()
-//         .then(result => {
-//             console.log(result);
-//             res.status(201).json({
-//                 message: 'successfully story created!',
-//                 story: result
-//             })
-//         })
-//         .catch(err => {
-//             if(!err.statusCode){
-//                 err.statusCode = 500;
-//             }
-//             next(err);
-//         })
-// }
-
-// exports.getStoryById = async (req, res, next) => {
-//     try{
-//         const storyId = req.params.storyId;
-//         console.log(storyId);
-//         const story = await Story.findById(storyId);
-//         console.log(story);
-//         if(!story){
-//             const error = new Error('story not found!');
-//             error.statusCode = 404;
-//             console.log(error);
-//             throw error;
-//         }
-//         res.status(200).json(story);
-//     }catch(err){
-//         console.log('here is error!');
-//         throw err;
-//     }
-// }
