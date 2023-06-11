@@ -12,6 +12,12 @@ app.use(express.json());
 
 app.use(corsHandler);
 
+app.get('/', (req,res,next) => {
+    res.status(200).json({
+        "message": "hehe"
+    })
+})
+
 app.use('/user', userRoutes);
 app.use('/story', storyRoutes);
 app.use('/episode', episodeRoutes);
