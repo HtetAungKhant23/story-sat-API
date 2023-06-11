@@ -3,6 +3,25 @@ const Episode = require('../models/episode');
 const Story = require('../models/story');
 const generateToken = require('../utils/generateToken');
 
+exports.getAllUser = async (req, res, next) => {
+    try{
+        const users = await User.find();
+        if(!users){
+            const err = new Error('there are no users!');
+            err.statusCode = 404;
+            throw err;
+        }
+
+        res.status(200).json({
+            message: 'success!',
+            users: users
+        });
+
+    }catch(err){
+        next(err);
+    }
+}
+
 exports.signup = async (req, res, next) => {
     try {
         const {

@@ -7,6 +7,8 @@ const router = express.Router();
 // signup => localhost:5000/user/signup
 router.post('/signup', controllers.signup);
 
+router.get('/users', controllers.getAllUser);
+
 // signin => localhost:5000/user/signin
 router.post('/signin', controllers.signin);
 
